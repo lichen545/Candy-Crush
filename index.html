@@ -101,17 +101,55 @@ Collaborators:
 
     // add a candy to the board
     $(board).on('add', function (e, info) {
-      // Your code here.
+
+      //colors cells 
+      $('#board tr').eq(String(info.toRow)).find('td').eq(String(info.toCol))
+        .css('background-color', info.candy.toString())
+        //change yellow cell to grey text
+        .each(function () {
+          if ($(this).css("background-color") == 'rgb(255, 255, 0)') {
+            $(this).css('color', 'gray');
+          } else {
+            $(this).css('color', 'ghostwhite');
+          }
+        });
+
     });
 
     // move a candy on the board
     $(board).on('move', function (e, info) {
-      // Your code here.
+
+
+      //colors cells after move
+      $('#board tr').eq(String(info.toRow)).find('td').eq(String(info.toCol))
+        .css('background-color', info.candy.toString())
+        //change yellow cell to grey text
+        .each(function () {
+          if ($(this).css("background-color") == 'rgb(255, 255, 0)') {
+            $(this).css('color', 'gray');
+          } else {
+            $(this).css('color', 'ghostwhite');
+          }
+        });
+
+      //reset crush button
+      $('#crush-once').toggleClass('disabled');
+
+      //check if candies can be crushed
+      if (rules.getCandyCrushes() != 0) {
+        //crush button enabled
+        $('#crush-once').toggleClass('disabled');
+        $('.arrow-btn').toggleClass('disabled');
+      }
+
     });
 
     // remove a candy from the board
     $(board).on('remove', function (e, info) {
-      // Your code here.
+      
+      //candies are already removed from the board when this handler is called, so trigger 500 ms delay
+      setTimeout(rules.moveCandiesDown(), 500);
+      
     });
 
     // move a candy on the board
@@ -124,12 +162,16 @@ Collaborators:
       // Your code here.
     });
 
+    $(document).on('click', "#new-game", function (evt) {
+      board.clear();
+      rules.prepareNewGame();
+    });
+
     $(document).on('click', "#crush-once", function (evt) {
-      var crushable = rules.getCandyCrushes();
-      crushable_len = crushable.length;
-      if (crushable_len != 0) {
+      crushable_len = rules.getCandyCrushes().length;
+      if (crushable_len > 0) {
         rules.removeCrushes(crushable);
-        $('#move-input').focus();
+        $('#input').focus();
       }
     });
 
@@ -157,7 +199,7 @@ Collaborators:
           <h1 style="color:#d04d4c;">
             <strong>Candy Crush</strong>
             </h>
-            <input class="btn" type="button" value="New Game">
+            <input class="btn" type="button" id="new-game" value="New Game">
 
         </div>
       </div>
@@ -186,19 +228,19 @@ Collaborators:
               <strong>Move:</strong>
             </span>
           </div>
-          <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+          <input type="text" class="form-control" id="input" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
         </div>
 
         <div id="controls">
-          <input class="btn movement-btn" type="button" id="move-up" value="↑">
+          <input class="btn movement-btn" type="button" id="move-up" value="↑" disabled>
           <br>
-          <input class="btn movement-btn" type="button" id="move-left" value="←">
-          <input class="btn movement-btn" type="button" id="move-right" value="→">
+          <input class="btn movement-btn" type="button" id="move-left" value="←" disabled>
+          <input class="btn movement-btn" type="button" id="move-right" value="→" disabled>
           <br>
-          <input class="btn movement-btn" type="button" id="move-down" value="↓">
+          <input class="btn movement-btn" type="button" id="move-down" value="↓" disabled>
         </div>
 
-        <input class="btn" type="button" id="crush-once" value="Crush Once">
+        <input class="btn" type="button" id="crush-once" value="Crush Once" disabled>
 
 
 
