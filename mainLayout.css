@@ -7,7 +7,7 @@
   outline: 1px dashed orange;
 } */
 
-#firstColumn, #lastColumn {
+#firstColumn, #lastColumn, #controls {
   text-align: center;
 }
 
@@ -37,4 +37,22 @@ h1 {
 
 .input-group {
   margin-top: 50%;
+}
+
+#move-down {
+  margin-right: 4px;
+}
+
+#move-left {
+  position: relative;
+  left: -18px;
+}
+
+#move-right {
+  position: relative;
+  right: -18px;
+}
+
+#crush-once {
+  margin-top: 25%;
 }

@@ -124,6 +124,15 @@ Collaborators:
       // Your code here.
     });
 
+    $(document).on('click', "#crush-once", function (evt) {
+      var crushable = rules.getCandyCrushes();
+      crushable_len = crushable.length;
+      if (crushable_len != 0) {
+        rules.removeCrushes(crushable);
+        $('#move-input').focus();
+      }
+    });
+
     // keyboard events arrive here
     $(document).on('keydown', function (evt) {
       // Your code here.
@@ -153,7 +162,7 @@ Collaborators:
         </div>
       </div>
 
-      
+
 
       <div class="col-md-6" id="mainColumn">
 
@@ -181,11 +190,15 @@ Collaborators:
         </div>
 
         <div id="controls">
-          <input class="btn movement-btn" type="button"  value="←">
-          <input class="btn movement-btn" type="button"  value="↑">
-          <input class="btn movement-btn" type="button"  value="↓">
-          <input class="btn movement-btn" type="button"  value="→">
+          <input class="btn movement-btn" type="button" id="move-up" value="↑">
+          <br>
+          <input class="btn movement-btn" type="button" id="move-left" value="←">
+          <input class="btn movement-btn" type="button" id="move-right" value="→">
+          <br>
+          <input class="btn movement-btn" type="button" id="move-down" value="↓">
         </div>
+
+        <input class="btn" type="button" id="crush-once" value="Crush Once">
 
 
 
