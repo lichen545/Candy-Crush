@@ -1,7 +1,7 @@
 <!--
 CandyCrush
-Your Name:
-Collaborators:
+Your Name: Liyuan Chen
+Collaborators: Andrew Burks
 -->
 <!DOCTYPE html>
 <html>
@@ -32,7 +32,6 @@ Collaborators:
   <script src="rules.js"></script>
 
   <script>
-
     // By default, the first board loaded by your page will be the same 
     // each time you load (which is accomplished by "seeding" the random
     // number generator. This makes testing (and grading!) easier!
@@ -42,7 +41,8 @@ Collaborators:
     // A short jQuery extension to read query parameters from the URL.
     $.extend({
       getUrlVars: function () {
-        var vars = [], pair;
+        var vars = [],
+          pair;
         var pairs = window.location.search.substr(1).split('&');
         for (var i = 0; i < pairs.length; i++) {
           pair = pairs[i].split('=');
@@ -136,20 +136,21 @@ Collaborators:
       $('#crush-once').toggleClass('disabled');
 
       //check if candies can be crushed
-      if (rules.getCandyCrushes() != 0) {
+      if (rules.getCandyCrushes() > 0) {
         //crush button enabled
         $('#crush-once').toggleClass('disabled');
-        $('.arrow-btn').toggleClass('disabled');
+        $('.movement-btn').toggleClass('disabled');
       }
 
     });
 
     // remove a candy from the board
     $(board).on('remove', function (e, info) {
-      
-      //candies are already removed from the board when this handler is called, so trigger 500 ms delay
-      setTimeout(rules.moveCandiesDown(), 500);
-      
+
+      //candy is already removed from the board when this handler is called, so just delete the background color
+      $('#board tr').eq(String(info.fromRow)).find('td').eq(String(info.fromCol))
+        .css('background-color', 'transparent')
+
     });
 
     // move a candy on the board
@@ -167,20 +168,79 @@ Collaborators:
       rules.prepareNewGame();
     });
 
+    $(document).on('click', ".movement-btn", function (evt) {
+
+      var row = annot_num;
+      var col = annot_alph.toLowerCase().charCodeAt() - "a".charCodeAt();
+      var dir = function () {
+        if (this.id == "move-up") {
+          return "up"
+        } else if (this.id == "move-down") {
+          return "down";
+        } else if (this.id == "move-left") {
+          return "left";
+        } else {
+          return "right";
+        }
+      };
+
+      if (rules.isMoveTypeValid(board.getCandyAt(row, col), dir))
+        board.flipCandies(board.getCandyAt(row, col), board.getCandyInDirection(board.getCandyAt(row, col), dir));
+
+      //reset input
+      $('#input').trigger('reset');
+
+      //disable movement buttons
+      $('.movement-btn').prop('disabled', 'true');
+      $("#input").focus();
+    });
+
     $(document).on('click', "#crush-once", function (evt) {
+
       crushable_len = rules.getCandyCrushes().length;
       if (crushable_len > 0) {
         rules.removeCrushes(crushable);
+        setTimeout(rules.moveCandiesDown, 500);
         $('#input').focus();
       }
+
     });
 
     // keyboard events arrive here
     $(document).on('keydown', function (evt) {
-      // Your code here.
+      //checks input
+      var input = $('#input').val();
+      var first = input[0].match(/[a-h]/i);
+      var second = input[1].match(/[0-7]/);
+
+      if (input != "" && input.length >= 2) {
+        if (first)
+          annot_alph = first[0];
+
+        if (second)
+          annot_num = parseInt(second[0]);
+      }
+
+      var row = annot_num;
+      var col = annot_alph.charCodeAt() - "a".charCodeAt();
+
+      if (first && second) {
+        if (rules.isMoveTypeValid(board.getCandyAt(row, column), "up")) {
+          $('#move-up').prop('disabled', false);
+        }
+        if (rules.isMoveTypeValid(board.getCandyAt(row, column), "down")) {
+          $('#move-down').prop('disabled', false);
+        }
+        if (rules.isMoveTypeValid(board.getCandyAt(row, column), "left")) {
+          $('#move-left').prop('disabled', false);
+        }
+        if (rules.isMoveTypeValid(board.getCandyAt(row, column), "right")) {
+          $('#move-right').prop('disabled', false);
+        }
+      } else {
+        $('.movement-btn').prop('disabled', true);
+      }
     });
-
-
   </script>
 
 
