@@ -119,6 +119,7 @@ Collaborators: Andrew Burks
     // move a candy on the board
     $(board).on('move', function (e, info) {
 
+      console.log("move handler called");
 
       //colors cells after move
       $('#board tr').eq(String(info.toRow)).find('td').eq(String(info.toCol))
@@ -132,14 +133,18 @@ Collaborators: Andrew Burks
           }
         });
 
-      //reset crush button
-      $('#crush-once').toggleClass('disabled');
+      
+      console.log("crush once reset");
+      console.log("candy crushes: " + rules.getCandyCrushes());
 
       //check if candies can be crushed
-      if (rules.getCandyCrushes() > 0) {
+      if (rules.getCandyCrushes().length > 0) {
         //crush button enabled
-        $('#crush-once').toggleClass('disabled');
-        $('.movement-btn').toggleClass('disabled');
+        $('#crush-once').prop('disabled', false);
+        console.log("Candies can be crushed, enabling crush-once");
+
+
+        $('.movement-btn').prop('disabled', 'true');
       }
 
     });
@@ -169,26 +174,33 @@ Collaborators: Andrew Burks
     });
 
     $(document).on('click', ".movement-btn", function (evt) {
+      
+      console.log("movement btn clicked");
 
-      var row = annot_num;
+      var row = annot_num-1;
       var col = annot_alph.toLowerCase().charCodeAt() - "a".charCodeAt();
-      var dir = function () {
-        if (this.id == "move-up") {
+
+      var direction = function (x) {
+        if (x == "move-up") {
           return "up"
-        } else if (this.id == "move-down") {
+        } else if (x == "move-down") {
           return "down";
-        } else if (this.id == "move-left") {
+        } else if (x == "move-left") {
           return "left";
         } else {
           return "right";
         }
       };
+      var dir = direction(this.id);
 
-      if (rules.isMoveTypeValid(board.getCandyAt(row, col), dir))
-        board.flipCandies(board.getCandyAt(row, col), board.getCandyInDirection(board.getCandyAt(row, col), dir));
+      console.log("direction: " + dir);
+
+      //if (rules.isMoveTypeValid(board.getCandyAt(row, col), dir))
+      board.flipCandies(board.getCandyAt(row, col), board.getCandyInDirection(board.getCandyAt(row, col), dir));
+      console.log("row: " + row + ", col: " + col);
 
       //reset input
-      $('#input').trigger('reset');
+      $('#input').val("");
 
       //disable movement buttons
       $('.movement-btn').prop('disabled', 'true');
@@ -197,9 +209,9 @@ Collaborators: Andrew Burks
 
     $(document).on('click', "#crush-once", function (evt) {
 
-      crushable_len = rules.getCandyCrushes().length;
-      if (crushable_len > 0) {
-        rules.removeCrushes(crushable);
+      
+      if (rules.getCandyCrushes().length > 0) {
+        rules.removeCrushes(rules.getCandyCrushes());
         setTimeout(rules.moveCandiesDown, 500);
         $('#input').focus();
       }
@@ -210,31 +222,41 @@ Collaborators: Andrew Burks
     $(document).on('keydown', function (evt) {
       //checks input
       var input = $('#input').val();
-      var first = input[0].match(/[a-h]/i);
-      var second = input[1].match(/[0-7]/);
+      var first = (input[0]).match(/[a-h]/i);
+      var second = (input[1]).match(/[1-8]/);
 
       if (input != "" && input.length >= 2) {
         if (first)
-          annot_alph = first[0];
+          annot_alph = first[0].toLowerCase();
 
         if (second)
           annot_num = parseInt(second[0]);
       }
 
-      var row = annot_num;
-      var col = annot_alph.charCodeAt() - "a".charCodeAt();
+      var row = annot_num-1;
+      var col = annot_alph.toLowerCase().charCodeAt() - "a".charCodeAt();
+
+      console.log("row: " + row + ", col: " + col);
+
+      console.log("input[0]: "+ input[0]);
+      console.log("first : " + first + ", second : " + second);
 
       if (first && second) {
-        if (rules.isMoveTypeValid(board.getCandyAt(row, column), "up")) {
+        console.log("Button Enabler Triggered");
+        if (rules.isMoveTypeValid(board.getCandyAt(row, col), "up")) {
+          console.log("Up Enabled");
           $('#move-up').prop('disabled', false);
         }
-        if (rules.isMoveTypeValid(board.getCandyAt(row, column), "down")) {
+        if (rules.isMoveTypeValid(board.getCandyAt(row, col), "down")) {
+          console.log("Down Enabled");
           $('#move-down').prop('disabled', false);
         }
-        if (rules.isMoveTypeValid(board.getCandyAt(row, column), "left")) {
+        if (rules.isMoveTypeValid(board.getCandyAt(row, col), "left")) {
+          console.log("Left Enabled");
           $('#move-left').prop('disabled', false);
         }
-        if (rules.isMoveTypeValid(board.getCandyAt(row, column), "right")) {
+        if (rules.isMoveTypeValid(board.getCandyAt(row, col), "right")) {
+          console.log("Right Enabled");
           $('#move-right').prop('disabled', false);
         }
       } else {
