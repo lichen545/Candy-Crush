@@ -114,6 +114,16 @@ Collaborators: Andrew Burks
           }
         });
 
+      //Checks if candies can be crushed after being added
+      if (rules.getCandyCrushes().length > 0) {
+        //crush button enabled
+        $('#crush-once').prop('disabled', false);
+        console.log("Candies can be crushed, enabling crush-once");
+      } else {
+        //crush button disabled
+        $('#crush-once').prop('disabled', true);
+      }
+
     });
 
     // move a candy on the board
@@ -133,7 +143,7 @@ Collaborators: Andrew Burks
           }
         });
 
-      
+
       console.log("crush once reset");
       console.log("candy crushes: " + rules.getCandyCrushes());
 
@@ -155,7 +165,6 @@ Collaborators: Andrew Burks
       //candy is already removed from the board when this handler is called, so just delete the background color
       $('#board tr').eq(String(info.fromRow)).find('td').eq(String(info.fromCol))
         .css('background-color', 'transparent')
-
     });
 
     // move a candy on the board
@@ -174,11 +183,11 @@ Collaborators: Andrew Burks
     });
 
     $(document).on('click', ".movement-btn", function (evt) {
-      
+
       console.log("movement btn clicked");
 
-      var row = annot_num-1;
-      var col = annot_alph.toLowerCase().charCodeAt() - "a".charCodeAt();
+      var row = rowNumber - 1;
+      var col = colAlpha.toLowerCase().charCodeAt() - "a".charCodeAt();
 
       var direction = function (x) {
         if (x == "move-up") {
@@ -195,7 +204,7 @@ Collaborators: Andrew Burks
 
       console.log("direction: " + dir);
 
-      //if (rules.isMoveTypeValid(board.getCandyAt(row, col), dir))
+
       board.flipCandies(board.getCandyAt(row, col), board.getCandyInDirection(board.getCandyAt(row, col), dir));
       console.log("row: " + row + ", col: " + col);
 
@@ -209,7 +218,7 @@ Collaborators: Andrew Burks
 
     $(document).on('click', "#crush-once", function (evt) {
 
-      
+
       if (rules.getCandyCrushes().length > 0) {
         rules.removeCrushes(rules.getCandyCrushes());
         setTimeout(rules.moveCandiesDown, 500);
@@ -225,20 +234,20 @@ Collaborators: Andrew Burks
       var first = (input[0]).match(/[a-h]/i);
       var second = (input[1]).match(/[1-8]/);
 
-      if (input != "" && input.length >= 2) {
+      if (input.length >= 2) {
         if (first)
-          annot_alph = first[0].toLowerCase();
+          colAlpha = first[0].toLowerCase();
 
         if (second)
-          annot_num = parseInt(second[0]);
+          rowNumber = parseInt(second[0]);
       }
 
-      var row = annot_num-1;
-      var col = annot_alph.toLowerCase().charCodeAt() - "a".charCodeAt();
+      var row = rowNumber - 1;
+      var col = colAlpha.toLowerCase().charCodeAt() - "a".charCodeAt();
 
       console.log("row: " + row + ", col: " + col);
 
-      console.log("input[0]: "+ input[0]);
+      console.log("input[0]: " + input[0]);
       console.log("first : " + first + ", second : " + second);
 
       if (first && second) {
@@ -291,6 +300,8 @@ Collaborators: Andrew Burks
       <div class="col-md-6" id="mainColumn">
 
         <!-- Column 2 Code Here -->
+        <canvas id="canvas" width="100%" height="100%"></canvas>
+
         <table id="board" align="center">
 
         </table>
