@@ -231,46 +231,50 @@ Collaborators: Andrew Burks
     $(document).on('keydown', function (evt) {
       //checks input
       var input = $('#input').val();
-      var first = (input[0]).match(/[a-h]/i);
-      var second = (input[1]).match(/[1-8]/);
 
       if (input.length >= 2) {
+        var first = (input[0]).match(/[a-h]/i);
+        var second = (input[1]).match(/[1-8]/);
+
         if (first)
           colAlpha = first[0].toLowerCase();
 
         if (second)
           rowNumber = parseInt(second[0]);
-      }
 
-      var row = rowNumber - 1;
-      var col = colAlpha.toLowerCase().charCodeAt() - "a".charCodeAt();
+        var row = rowNumber - 1;
+        var col = colAlpha.toLowerCase().charCodeAt() - "a".charCodeAt();
 
-      console.log("row: " + row + ", col: " + col);
+        console.log("row: " + row + ", col: " + col);
 
-      console.log("input[0]: " + input[0]);
-      console.log("first : " + first + ", second : " + second);
+        console.log("input[0]: " + input[0]);
+        console.log("first : " + first + ", second : " + second);
 
-      if (first && second) {
-        console.log("Button Enabler Triggered");
-        if (rules.isMoveTypeValid(board.getCandyAt(row, col), "up")) {
-          console.log("Up Enabled");
-          $('#move-up').prop('disabled', false);
-        }
-        if (rules.isMoveTypeValid(board.getCandyAt(row, col), "down")) {
-          console.log("Down Enabled");
-          $('#move-down').prop('disabled', false);
-        }
-        if (rules.isMoveTypeValid(board.getCandyAt(row, col), "left")) {
-          console.log("Left Enabled");
-          $('#move-left').prop('disabled', false);
-        }
-        if (rules.isMoveTypeValid(board.getCandyAt(row, col), "right")) {
-          console.log("Right Enabled");
-          $('#move-right').prop('disabled', false);
+        if (first && second) {
+          console.log("Button Enabler Triggered");
+          if (rules.isMoveTypeValid(board.getCandyAt(row, col), "up")) {
+            console.log("Up Enabled");
+            $('#move-up').prop('disabled', false);
+          }
+          if (rules.isMoveTypeValid(board.getCandyAt(row, col), "down")) {
+            console.log("Down Enabled");
+            $('#move-down').prop('disabled', false);
+          }
+          if (rules.isMoveTypeValid(board.getCandyAt(row, col), "left")) {
+            console.log("Left Enabled");
+            $('#move-left').prop('disabled', false);
+          }
+          if (rules.isMoveTypeValid(board.getCandyAt(row, col), "right")) {
+            console.log("Right Enabled");
+            $('#move-right').prop('disabled', false);
+          }
         }
       } else {
+        console.log("movement btns disabled due to input change");
         $('.movement-btn').prop('disabled', true);
       }
+
+
     });
   </script>
 
