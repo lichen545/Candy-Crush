@@ -3,20 +3,24 @@
  */
 
 /* REMOVE ME - dashed lines and height for debugging */
+
 /* #mainColumn {
   outline: 1px dashed orange;
 } */
 
-#firstColumn, #lastColumn, #controls {
+#firstColumn,
+#lastColumn,
+#controls {
   text-align: center;
 }
 
 /* Your css code here! */
 
-table, th, td {
-
+table,
+th,
+td,
+canvas {
   border: 1px solid grey;
-  
 }
 
 td {
@@ -30,13 +34,22 @@ table {
   table-layout: fixed;
 }
 
+canvas {
+  height: 320px;
+  width: 320px;
+  text-align: center;
+  margin-top: 15%;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
 
 h1 {
   padding-top: 50%;
 }
 
 #board {
-  margin-top: 15%;
+  margin-top: 5px;
 }
 
 .input-group {
@@ -57,6 +70,6 @@ h1 {
   right: -18px;
 }
 
-#crush-once {
-  margin-top: 25%;
+#controls, #crush-once {
+  margin-top: 10%;
 }
