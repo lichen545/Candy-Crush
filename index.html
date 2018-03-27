@@ -164,7 +164,7 @@ Collaborators: Andrew Burks
           }
         });
 
-      console.log("ctx: " + ctx);
+      // console.log("ctx: " + ctx);
       ctx.drawImage(eval(info.candy.toString() + "Candy"), info.toRow * candyWidth, info.toCol * candyWidth,
         candyWidth, candyWidth);
       console.log("candy successfully drawn");
@@ -219,7 +219,11 @@ Collaborators: Andrew Burks
 
       //candy is already removed from the board when this handler is called, so just delete the background color
       $('#board tr').eq(String(info.fromRow)).find('td').eq(String(info.fromCol))
-        .css('background-color', 'transparent')
+        .css('background-color', 'transparent');
+
+      ctx.clearRect(info.fromRow * candyWidth, info.fromCol * candyWidth, candyWidth, candyWidth);
+      ctx.strokeRect(info.fromRow * candyWidth, info.fromCol * candyWidth, candyWidth, candyWidth);
+      console.log("candy removed");
     });
 
     // move a candy on the board
