@@ -66,19 +66,21 @@ Collaborators: Andrew Burks
     var canvas;
     var ctx;
     var candyWidth;
+    var size;
 
-    // initialize board
-    var size = parseInt($.getUrlVar('size'));
-    //sets size to default size if input value is out of bounds
-    if (size < 3 || size > 20) {
-      size = 8;
-    }
+    // // initialize board
+    // var size = parseInt($.getUrlVar('size'));
+    // //sets size to default size if input value is out of bounds
+    // if (size < 3 || size > 20) {
+    //   size = 8;
+    // }
 
-    if ($.getUrlVar('size') && $.getUrlVar('size') >= 3) {
-      board = new Board($.getUrlVar('size'));
+    if ($.getUrlVar('size') && $.getUrlVar('size') >= 3 && $.getUrlVar('size') <= 20) {
+      size = $.getUrlVar('size')
     } else {
-      board = new Board(DEFAULT_BOARD_SIZE);
+      size = DEFAULT_BOARD_SIZE
     }
+    board = new Board(size);
 
     //build candy img objects
     var redCandy = new Image();
@@ -109,7 +111,7 @@ Collaborators: Andrew Burks
 
       //Creation of visual gameboard
       canvas = document.querySelector('canvas');
-      console.log("entering canvas.js");
+      console.log("entering canvas with size " + size);
       if (canvas.getContext) {
 
         ctx = canvas.getContext('2d');
