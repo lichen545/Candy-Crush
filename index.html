@@ -238,7 +238,14 @@ Collaborators: Andrew Burks
 
     // move a candy on the board
     $(board).on('scoreUpdate', function (e, info) {
-      // Your code here. To be implemented in pset 2.
+      $('label').text(info.score + " points");
+
+      if (info.candy) {
+        $('label').css('background-color', info.candy.toString());
+        // console.log("candy: ")
+        // console.log(info.candy.toString());
+      }
+
     });
 
     // Button Events
@@ -250,12 +257,19 @@ Collaborators: Andrew Burks
       let rect = canvas.getBoundingClientRect();
       let x = event.clientX - rect.left;
       let y = event.clientY - rect.top;
-      console.log("canvas clicked - x: " + x + " y: " + y);
+      // console.log("canvas clicked - x: " + x + " y: " + y);
+
+      let rectWidth = rect.width / size;
+      let col = String.fromCharCode(x / rectWidth + 97);
+      let row = Math.floor(y / rectWidth + 1);
+      // console.log("canvas clicked - col: " + col + " row: " + row);
+      $('#input').val(col + row);
     });
 
     $(document).on('click', "#new-game", function (evt) {
       board.clear();
       rules.prepareNewGame();
+      $('label').css('background-color', '#ccc');
     });
 
     $(document).on('click', ".movement-btn", function (evt) {
@@ -369,9 +383,9 @@ Collaborators: Andrew Burks
 
           <h1 style="color:#d04d4c;">
             <strong>Candy Crush</strong>
-            </h>
-            <input class="btn" type="button" id="new-game" value="New Game">
-
+          </h1>
+          <label id="score">0 Points</label>
+          <input class="btn" type="button" id="new-game" value="New Game">
         </div>
       </div>
 

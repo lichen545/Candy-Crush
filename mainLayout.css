@@ -48,6 +48,18 @@ h1 {
   padding-top: 50%;
 }
 
+label {
+  border: 1px solid #ccc;
+  background:#ccc;
+  color: ghostwhite;
+  font-size: 120%;
+  font-weight: 600;
+  padding: 6px;
+  padding-bottom: 9px;
+  margin: 10px 10px 10px 10px;
+  display: block;
+}
+
 #board {
   margin-top: 5px;
 }
@@ -70,6 +82,7 @@ h1 {
   right: -18px;
 }
 
-#controls, #crush-once {
+#controls,
+#crush-once {
   margin-top: 10%;
 }
