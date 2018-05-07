@@ -170,7 +170,9 @@ var Board = function(size)
         toRow:toRow,
         toCol:toCol,
         fromRow:candy.row,
-        fromCol:candy.col};
+        fromCol:candy.col,
+        type:"shift"
+      };
 
       delete this.square[candy.row][candy.col];
       this.square[toRow][toCol] = candy;
@@ -290,14 +292,16 @@ var Board = function(size)
       toRow: candy2.row,
       toCol: candy2.col,
       fromRow: candy1.row,
-      fromCol: candy1.col
+      fromCol: candy1.col,
+      type:"swap"
     };
     var details2 = {
       candy: candy2,
       toRow: candy1.row,
       toCol: candy1.col,
       fromRow: candy2.row,
-      fromCol: candy2.col
+      fromCol: candy2.col,
+      type:"swap"
     };
     candy1.row = details1.toRow;
     candy1.col = details1.toCol;

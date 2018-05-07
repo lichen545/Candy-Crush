@@ -68,16 +68,11 @@ Collaborators: Andrew Burks
     var candyWidth;
     var size;
 
-    // // initialize board
-    // var size = parseInt($.getUrlVar('size'));
-    // //sets size to default size if input value is out of bounds
-    // if (size < 3 || size > 20) {
-    //   size = 8;
-    // }
-
+    // initialize board
     if ($.getUrlVar('size') && $.getUrlVar('size') >= 3 && $.getUrlVar('size') <= 20) {
       size = $.getUrlVar('size')
     } else {
+      //sets size to default size if input value is out of bounds
       size = DEFAULT_BOARD_SIZE
     }
     board = new Board(size);
@@ -167,7 +162,7 @@ Collaborators: Andrew Burks
         });
 
       // console.log("ctx: " + ctx);
-      ctx.drawImage(eval(info.candy.toString() + "Candy"), info.toRow * candyWidth, info.toCol * candyWidth,
+      ctx.drawImage(eval(info.candy.toString() + "Candy"), info.toCol * candyWidth, info.toRow * candyWidth,
         candyWidth, candyWidth);
       console.log("candy successfully drawn");
 
@@ -201,6 +196,19 @@ Collaborators: Andrew Burks
           }
         });
 
+      //clear candy tile based on move type
+      if (info.type === "shift") {
+        ctx.clearRect(info.fromCol * candyWidth, info.fromRow * candyWidth, candyWidth, candyWidth);
+        ctx.strokeRect(info.fromCol * candyWidth, info.fromRow * candyWidth, candyWidth, candyWidth);
+      } else if (info.type === "swap") {
+        ctx.clearRect(info.toCol * candyWidth, info.toRow * candyWidth, candyWidth, candyWidth);
+        ctx.strokeRect(info.toCol * candyWidth, info.toRow * candyWidth, candyWidth, candyWidth);
+      }
+
+      //draw new candy
+      ctx.drawImage(eval(info.candy.toString() + "Candy"), info.toCol * candyWidth, info.toRow * candyWidth,
+        candyWidth, candyWidth);
+      console.log("candy successfully drawn");
 
       console.log("crush once reset");
       console.log("candy crushes: " + rules.getCandyCrushes());
@@ -223,8 +231,8 @@ Collaborators: Andrew Burks
       $('#board tr').eq(String(info.fromRow)).find('td').eq(String(info.fromCol))
         .css('background-color', 'transparent');
 
-      ctx.clearRect(info.fromRow * candyWidth, info.fromCol * candyWidth, candyWidth, candyWidth);
-      ctx.strokeRect(info.fromRow * candyWidth, info.fromCol * candyWidth, candyWidth, candyWidth);
+      ctx.clearRect(info.fromCol * candyWidth, info.fromRow * candyWidth, candyWidth, candyWidth);
+      ctx.strokeRect(info.fromCol * candyWidth, info.fromRow * candyWidth, candyWidth, candyWidth);
       console.log("candy removed");
     });
 
@@ -236,6 +244,13 @@ Collaborators: Andrew Burks
     // Button Events
     $(document).on('click', "#buttonIDhere", function (evt) {
       // Your code here.
+    });
+
+    $(document).on('click', "#canvas", function (evt) {
+      let rect = canvas.getBoundingClientRect();
+      let x = event.clientX - rect.left;
+      let y = event.clientY - rect.top;
+      console.log("canvas clicked - x: " + x + " y: " + y);
     });
 
     $(document).on('click', "#new-game", function (evt) {
